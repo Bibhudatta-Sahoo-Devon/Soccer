@@ -11,22 +11,22 @@ class RoleCheck
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure $next
      * @param $role
      * @return mixed
      */
-    public function handle(Request $request, Closure $next,$role)
+    public function handle(Request $request, Closure $next, $role = null)
     {
 
-        if (($role == null && Auth::user()->tokenCan('admin')) || ($role == 'admin' && Auth::user()->role == 'A')){
+        if (($role == null && Auth::user()->tokenCan('admin')) || ($role == 'admin' && Auth::user()->role == 'A')) {
             return $next($request);
         }
 
-        if ($role)
-            return redirect('dashboard');
-        else
-        return response(['Message'=>'Access denied!'],401);
+        if ($role == null)
+            return response(['Message' => 'Access denied!'], 401);
+
+        return redirect('dashboard');
 
     }
 }

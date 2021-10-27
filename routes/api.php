@@ -29,12 +29,10 @@ Route::middleware(['auth:sanctum'])->group(function (){
 
     Route::middleware(['role'])->group(function (){
         Route::post('team',[TeamsController::class,'store']);
-        Route::get('team/{teams}',[TeamsController::class,'edit']);
         Route::put('team/{teams}',[TeamsController::class,'update']);
         Route::delete('team/{teams}',[TeamsController::class,'destroy']);
 
-        Route::post('players',[PlayersController::class,'store']);
-        Route::get('player/{players}',[PlayersController::class,'edit']);
+        Route::post('player',[PlayersController::class,'store']);
         Route::put('player/{players}',[PlayersController::class,'update']);
         Route::delete('player/{players}',[PlayersController::class,'destroy']);
     });

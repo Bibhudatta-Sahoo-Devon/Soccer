@@ -2,18 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTeamRequest;
+use App\Http\Requests\UpdateTeamRequest;
+use App\Interfaces\TeamRepositoryInterface;
 use App\Models\Teams;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class TeamsController extends Controller
 {
+
+    private $repository;
+
+    public function __construct(TeamRepositoryInterface $repository)
+    {
+       $this->repository =  $repository;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index():object
     {
         $allTeams = Teams::all();
         if (!empty($allTeams)) {
@@ -28,63 +39,27 @@ class TeamsController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTeamRequest $request):object
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'logo' => ['required', 'mimes:png,jpg', 'max:2048'],
-        ]);
-
-        if ($request->file('logo')->isValid()) {
-            $logName = $request->get('name').strtotime(now()).'.'.$request->file('logo')->getMimeType();
-            $request->file('logo')->storeAs('public',$logName);
-            $team = new Teams();
-            $team->name = $request->get('name');
-            $team->logo = $logName;
-            $team->save();
-
-            return \response(['massage' => 'success'], Response::HTTP_CREATED);
-        };
-        return \response(['message' => 'Invalid data'], Response::HTTP_UNAUTHORIZED);
+        $request->validated();
+        $this->repository->store($request);
+        return \response(['massage' => 'Created Team successfully'], Response::HTTP_CREATED);
 
     }
 
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Teams $teams)
-    {
-        if (!empty($teams)) {
-            return response(['message' => 'Success', 'data' => $teams], Response::HTTP_OK);
-        } else
-            return \response(['message' => 'No data found'], Response::HTTP_NOT_FOUND);
-    }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param UpdateTeamRequest $request
      * @param \App\Models\Teams $teams
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Teams $teams)
+    public function update(UpdateTeamRequest $request, Teams $teams):object
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'logo' => ['nullable','mimes:png,jpg', 'max:2048'],
-        ]);
-        if (isset($request['logo']) && $request->file('logo')->isValid()) {
-            $logName = $request->get('name').strtotime(now()).$request->file('logo')->getMimeType();
-            $logo = $request->file('logo')->storeAs('public',$logName);
-            $teams->logo = $logName;
-        };
-        $teams->name = $request['name'];
-        $teams->save();
-        return \response(['massage' => 'success'], Response::HTTP_CREATED);
+        $request->validated();
+        $this->repository->update($request,$teams);
+        return \response(['massage' => 'Update Team successfully'], Response::HTTP_OK);
     }
 
     /**
@@ -93,10 +68,9 @@ class TeamsController extends Controller
      * @param \App\Models\Teams $teams
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Teams $teams)
+    public function destroy(Teams $teams):object
     {
-        $teams->player()->delete();
-        $teams->delete();
-        return \response(['massage' => 'success'], Response::HTTP_CREATED);
+        $this->repository->destroy($teams);
+        return \response(['massage' => 'Deleted Team successfully'], Response::HTTP_CREATED);
     }
 }
