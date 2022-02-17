@@ -3,8 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\APIController;
-use \App\Http\Controllers\TeamsController;
-use \App\Http\Controllers\PlayersController;
+use \App\Http\Controllers\Api\TeamsController;
+use \App\Http\Controllers\Api\PlayersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +19,7 @@ use \App\Http\Controllers\PlayersController;
 
 Route::post('/login',[APIController::class,'login']);
 Route::get('/teams',[TeamsController::class,'index']);
-Route::get('players/{teams}',[PlayersController::class,'index']);
+Route::get('/team/{teams}/players',[PlayersController::class,'index']);
 
 Route::middleware(['auth:sanctum'])->group(function (){
     Route::post('/logout',[APIController::class,'logout']);
@@ -29,11 +29,11 @@ Route::middleware(['auth:sanctum'])->group(function (){
 
     Route::middleware(['role'])->group(function (){
         Route::post('team',[TeamsController::class,'store']);
-        Route::put('team/{teams}',[TeamsController::class,'update']);
-        Route::delete('team/{teams}',[TeamsController::class,'destroy']);
+        Route::put('team/{id}',[TeamsController::class,'update']);
+        Route::delete('team/{id}',[TeamsController::class,'destroy']);
 
         Route::post('player',[PlayersController::class,'store']);
-        Route::put('player/{players}',[PlayersController::class,'update']);
-        Route::delete('player/{players}',[PlayersController::class,'destroy']);
+        Route::put('player/{id}',[PlayersController::class,'update']);
+        Route::delete('player/{id}',[PlayersController::class,'destroy']);
     });
 });

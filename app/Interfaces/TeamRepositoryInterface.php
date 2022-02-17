@@ -10,7 +10,7 @@ use App\Models\Teams;
 
 interface TeamRepositoryInterface
 {
-    public function store(StoreTeamRequest $request);
-    public function update(UpdateTeamRequest $request, Teams $teams);
-    public function destroy(Teams $teams);
+    public function store(StoreTeamRequest $request):void;
+    public function update(UpdateTeamRequest $request, Teams $teams):void;
+    public function destroy(Teams $teams):void;
 }

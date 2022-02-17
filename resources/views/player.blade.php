@@ -76,23 +76,23 @@
     </div>
 
     @section('script')
-        {{--        <script type="text/javascript">--}}
-        {{--            $(document).ready(function () {--}}
-        {{--                $('#team').on('submit', function(e) {--}}
-        {{--                    e.preventDefault();--}}
-        {{--                    var name = $('#name').val();--}}
-        {{--                    var logo = $('#logo').val();--}}
-        {{--                    $.ajax({--}}
-        {{--                        type: "POST",--}}
-        {{--                        url: '/team',--}}
-        {{--                        data: {name:name, logo:logo},--}}
-        {{--                        success: function( msg ) {--}}
-        {{--                            alert( msg );--}}
-        {{--                        }--}}
-        {{--                    });--}}
-        {{--                });--}}
-        {{--            });--}}
-        {{--        </script>--}}
+{{--                <script type="text/javascript">--}}
+{{--                    $(document).ready(function () {--}}
+{{--                        $('#team').on('submit', function(e) {--}}
+{{--                            e.preventDefault();--}}
+{{--                            var name = $('#name').val();--}}
+{{--                            var logo = $('#logo').val();--}}
+{{--                            $.ajax({--}}
+{{--                                type: "POST",--}}
+{{--                                url: '/team',--}}
+{{--                                data: {name:name, logo:logo},--}}
+{{--                                success: function( msg ) {--}}
+{{--                                    alert( msg );--}}
+{{--                                }--}}
+{{--                            });--}}
+{{--                        });--}}
+{{--                    });--}}
+{{--                </script>--}}
     @stop
 
 </x-app-layout>

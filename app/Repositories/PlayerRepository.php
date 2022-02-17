@@ -11,7 +11,8 @@ use App\Models\Players;
 
 class PlayerRepository implements PlayerRepositoryInterface
 {
-    public function store(StorePlayerRequest  $request){
+    public function store(StorePlayerRequest  $request):void
+    {
         $imageName = $request->get('first_name').strtotime(now()).'.'.$request->file('image')->getMimeType();
         $request->file('image')->storeAs('public',$imageName);
         $player = new players();
@@ -21,7 +22,8 @@ class PlayerRepository implements PlayerRepositoryInterface
         $player->team_id = $request->get('team');
         $player->save();
     }
-    public function update(UpdatePlayerRequest $request, players $players){
+    public function update(UpdatePlayerRequest $request, players $players):void
+    {
         if (isset($request['image']) && $request->file('image')->isValid()) {
             $imageName = $request->get('first_name').strtotime(now()).'.'.$request->file('image')->getMimeType();
             $request->file('image')->storeAs('public',$imageName);

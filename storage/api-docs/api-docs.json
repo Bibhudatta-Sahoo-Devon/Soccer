@@ -1,0 +1,752 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Soccer Api Documentation",
+        "description": "Soccer API for doing CURD operation.",
+        "contact": {
+            "email": "b.sahoo@devon.nl"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost.soccer.com/api",
+            "description": "Soccer API Server"
+        },
+        {
+            "url": "localhost.soccer.com/api"
+        }
+    ],
+    "paths": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "Login"
+                ],
+                "summary": "To login to soccer",
+                "description": "To get access token",
+                "operationId": "login",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/team/{teams}/players": {
+            "get": {
+                "tags": [
+                    "Player"
+                ],
+                "summary": "Get list of player for a team",
+                "description": "Returns list of players",
+                "operationId": "getPlayerList",
+                "parameters": [
+                    {
+                        "name": "teams",
+                        "in": "path",
+                        "description": "Teams id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PlayerResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/player": {
+            "post": {
+                "tags": [
+                    "Player"
+                ],
+                "summary": "Store new player",
+                "description": "To cerate a new player",
+                "operationId": "storePlayer",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StorePlayerRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Player"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "player/{id}": {
+            "put": {
+                "tags": [
+                    "Player"
+                ],
+                "summary": "Update existing player",
+                "description": "Update player data",
+                "operationId": "updatePlayer",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Player id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdatePlayerRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Players updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Player"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/player/{id}": {
+            "delete": {
+                "tags": [
+                    "Player"
+                ],
+                "summary": "Delete existing player",
+                "description": "Deletes a record and returns no content",
+                "operationId": "deletePlayer",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Player id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Player deleted successfully"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/teams": {
+            "get": {
+                "tags": [
+                    "Team"
+                ],
+                "summary": "Get list of teams",
+                "description": "Returns list of teams",
+                "operationId": "getTeamList",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TeamResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/team": {
+            "post": {
+                "tags": [
+                    "Team"
+                ],
+                "summary": "Store new Team",
+                "description": "To cerate a new team",
+                "operationId": "storeTeam",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreTeamRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Team"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "team/{id}": {
+            "put": {
+                "tags": [
+                    "Team"
+                ],
+                "summary": "Update existing Team",
+                "description": "Update Team data",
+                "operationId": "updateTeam",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Team id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateTeamRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Players updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Team"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        },
+        "/team/{id}": {
+            "delete": {
+                "tags": [
+                    "Team"
+                ],
+                "summary": "Delete existing team",
+                "description": "Deletes a record and returns no content",
+                "operationId": "deleteTeam",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Team id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Team deleted successfully"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "LoginRequest": {
+                "title": "User Login request",
+                "description": "validate login request body data",
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "title": "email",
+                        "description": "Email id of the user",
+                        "type": "string",
+                        "example": "user@gmail.com"
+                    },
+                    "password": {
+                        "title": "Password",
+                        "description": "User's Password",
+                        "type": "string",
+                        "example": "sadsa5@seew2"
+                    }
+                },
+                "type": "object"
+            },
+            "LoginResponse": {
+                "title": "User Login response",
+                "description": "Provide token on successful login ",
+                "properties": {
+                    "token": {
+                        "title": "Token",
+                        "description": "JWT token",
+                        "type": "string",
+                        "example": "3%7CiolYwg2yPhKGmU4Ivl0pwYzsuW1isf3HlN7iJTdW"
+                    }
+                },
+                "type": "object"
+            },
+            "Player": {
+                "title": "Player",
+                "description": "Player model",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "first_name": {
+                        "title": "First Name",
+                        "description": "First Name of the player",
+                        "type": "string",
+                        "example": "Lionel"
+                    },
+                    "last_name": {
+                        "title": "Last Name",
+                        "description": "Last Name of the player",
+                        "type": "string",
+                        "example": "Messi"
+                    },
+                    "image": {
+                        "title": "Image",
+                        "description": "Image file path of the player",
+                        "type": "string",
+                        "example": "/playre123625.jpg"
+                    },
+                    "team_id": {
+                        "title": "Team Id",
+                        "description": "Player's team ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": "3"
+                    },
+                    "created_at": {
+                        "title": "Created at",
+                        "description": "Created at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2022-02-15 15:55:45"
+                    },
+                    "updated_at": {
+                        "title": "Updated at",
+                        "description": "Updated at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2022-02-15 15:55:45"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Player"
+                }
+            },
+            "Team": {
+                "title": "Team",
+                "description": "Team model",
+                "properties": {
+                    "name": {
+                        "title": "Name",
+                        "description": "Name of the Team",
+                        "type": "string",
+                        "example": "unity"
+                    },
+                    "logo": {
+                        "title": "Logo",
+                        "description": "Logo file path of the team",
+                        "type": "string",
+                        "example": "/unity233625.jpg"
+                    },
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "created_at": {
+                        "title": "Created at",
+                        "description": "Created at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2022-02-15 15:55:45"
+                    },
+                    "updated_at": {
+                        "title": "Updated at",
+                        "description": "Updated at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2022-02-15 15:55:45"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Team"
+                }
+            },
+            "User": {
+                "title": "User",
+                "description": "User model",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "name": {
+                        "title": "Name",
+                        "description": "Name of the user",
+                        "type": "string",
+                        "example": "User1"
+                    },
+                    "email": {
+                        "title": "email",
+                        "description": "Email id of the user",
+                        "type": "string",
+                        "example": "user@gmail.com"
+                    },
+                    "password": {
+                        "title": "Password",
+                        "description": "User's Password",
+                        "type": "string",
+                        "example": "sadsa5@seew2"
+                    },
+                    "role": {
+                        "title": "Role",
+                        "description": "Role of the user",
+                        "type": "string",
+                        "example": "user"
+                    },
+                    "created_at": {
+                        "title": "Created at",
+                        "description": "Created at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2022-02-15 15:55:45"
+                    },
+                    "updated_at": {
+                        "title": "Updated at",
+                        "description": "Updated at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2022-02-15 15:55:45"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "User"
+                }
+            },
+            "PlayerResource": {
+                "title": "PlayerResource",
+                "description": "Player resource",
+                "properties": {
+                    "data": {
+                        "title": "Player Data",
+                        "description": "Player Data wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Player"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "PlayerResource"
+                }
+            },
+            "TeamResource": {
+                "title": "TeamResource",
+                "description": "Team resource",
+                "properties": {
+                    "data": {
+                        "title": "team Data",
+                        "description": "Team Data wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Team"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "TeamResource"
+                }
+            },
+            "StorePlayerRequest": {
+                "title": "Store Player request",
+                "description": "Store Player request body data",
+                "required": [
+                    "first_name",
+                    "last_name",
+                    "image",
+                    "team_id"
+                ],
+                "properties": {
+                    "first_name": {
+                        "title": "First Name",
+                        "description": "First Name of the player",
+                        "type": "string",
+                        "example": "Lionel"
+                    },
+                    "last_name": {
+                        "title": "Last Name",
+                        "description": "Last Name of the player",
+                        "type": "string",
+                        "example": "Messi"
+                    },
+                    "image": {
+                        "title": "Image",
+                        "description": "Image file path of the player",
+                        "type": "string",
+                        "example": "/playre123625.jpg"
+                    },
+                    "team_id": {
+                        "title": "Team Id",
+                        "description": "Player's team ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": "3"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreTeamRequest": {
+                "title": "Store Team request",
+                "description": "Store Team request body data",
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "title": "Name",
+                        "description": "Name of the Team",
+                        "type": "string",
+                        "example": "unity"
+                    },
+                    "logo": {
+                        "title": "Logo",
+                        "description": "Logo file path of the team",
+                        "type": "string",
+                        "example": "/unity233625.jpg"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdatePlayerRequest": {
+                "title": "Update player request",
+                "description": "Update player request body data",
+                "required": [
+                    "team_id"
+                ],
+                "properties": {
+                    "first_name": {
+                        "title": "First Name",
+                        "description": "First Name of the player",
+                        "type": "string",
+                        "example": "Lionel"
+                    },
+                    "last_name": {
+                        "title": "Last Name",
+                        "description": "Last Name of the player",
+                        "type": "string",
+                        "example": "Messi"
+                    },
+                    "image": {
+                        "title": "Image",
+                        "description": "Image file path of the player",
+                        "type": "string",
+                        "example": "/playre123625.jpg"
+                    },
+                    "team_id": {
+                        "title": "Team Id",
+                        "description": "Player's team ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": "3"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateTeamRequest": {
+                "title": "Update Team request",
+                "description": "Update Team request body data",
+                "required": [],
+                "properties": {
+                    "name": {
+                        "title": "Name",
+                        "description": "Name of the Team",
+                        "type": "string",
+                        "example": "unity"
+                    },
+                    "logo": {
+                        "title": "Logo",
+                        "description": "Logo file path of the team",
+                        "type": "string",
+                        "example": "/unity233625.jpg"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Soccer",
+            "description": "API Endpoints of Soccer"
+        }
+    ],
+    "security": [
+        []
+    ]
+}

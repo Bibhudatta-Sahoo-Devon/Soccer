@@ -1,15 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\PlayersController;
 use App\Http\Requests\StorePlayerRequest;
 use App\Http\Requests\UpdatePlayerRequest;
 use App\Models\Players;
 use App\Models\Teams;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
-class UIPlayerController extends Controller
+class PlayerController extends Controller
 {
     protected $players;
 
@@ -56,6 +60,7 @@ class UIPlayerController extends Controller
      */
     public function edit(Players $players)
     {
+        $t = new JsonResponse(['massage' => 'Players updated successfully'], Response::HTTP_ACCEPTED);
         return view('player', ['data' => $players]);
     }
 
@@ -68,7 +73,7 @@ class UIPlayerController extends Controller
     {
         $response = $this->players->update($request, $players);
 
-        if ($response->getStatusCode() == 200)
+        if ($response->getStatusCode() == 202)
             return redirect(route('teamPlayers', $request->get('team')))->with(['message' => 'Player updated successfully']);
 
         return redirect()->back()->withInput($request->all())->withErrors($response);
@@ -82,7 +87,7 @@ class UIPlayerController extends Controller
     {
         $teamID = $players->team_id;
         $response = $this->players->destroy($players);
-        if ($response->getStatusCode() == 200)
+        if ($response->getStatusCode() == 204)
             return redirect(route('teamPlayers', $teamID))->with(['message' => 'Player deleted successfully']);
 
         return redirect()->back()->withErrors($response);

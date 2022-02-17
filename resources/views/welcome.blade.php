@@ -577,7 +577,7 @@
 
         window.players = function (teamid) {
             $.ajax({
-                'url': "api/players/" + teamid,
+                'url': "/api/team/"+ teamid+"/players" ,
                 'method': "GET",
                 'contentType': 'application/json',
                 success: function (data) {

@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\TeamsController;
 use App\Http\Requests\StoreTeamRequest;
 use App\Http\Requests\UpdateTeamRequest;
 use App\Models\Teams;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class UITeamController extends Controller
+class TeamController extends Controller
 {
     protected $teams;
 
@@ -72,7 +74,7 @@ class UITeamController extends Controller
     public function update(UpdateTeamRequest $request, Teams $teams)
     {
         $response = $this->teams->update($request, $teams);
-        if ($response->getStatusCode() == 200)
+        if ($response->getStatusCode() == 202)
             return redirect('dashboard')->with(['message' => 'Team updated successfully']);
 
         return redirect()->back()->withInput($request->all())->withErrors($response);
@@ -86,7 +88,7 @@ class UITeamController extends Controller
     public function destroy(Teams $teams)
     {
         $response = $this->teams->destroy($teams);
-        if ($response->getStatusCode() == 201)
+        if ($response->getStatusCode() == 204)
             return redirect('dashboard')->with(['message' => 'Team successfully deleted!']);
 
         return redirect()->back()->withErrors($response);
