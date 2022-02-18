@@ -107,8 +107,8 @@ class PlayersController extends Controller
     public function store(StorePlayerRequest $request): JsonResponse
     {
         $request->validated();
-        $this->repository->store($request);
-        return new JsonResponse(['massage' => 'Player created successfully'], Response::HTTP_CREATED);
+        $response = $this->repository->store($request);
+        return new JsonResponse($response, Response::HTTP_CREATED);
     }
 
     /**
@@ -155,15 +155,15 @@ class PlayersController extends Controller
      * )
      *
      * @param UpdatePlayerRequest $request
-     * @param players $players
+     * @param $id
      * @return object
      */
 
-    public function update(UpdatePlayerRequest $request, players $players): JsonResponse
+    public function update(UpdatePlayerRequest $request, $id): JsonResponse
     {
         $request->validated();
-        $this->repository->update($request, $players);
-        return new JsonResponse(['massage' => 'Players updated successfully'], Response::HTTP_ACCEPTED);
+        $response =  $this->repository->update($request, $id);
+        return new JsonResponse($response, Response::HTTP_ACCEPTED);
     }
 
     /**
@@ -201,12 +201,12 @@ class PlayersController extends Controller
      * )
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\players $players
+     * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(players $players): JsonResponse
+    public function destroy($id): JsonResponse
     {
-        $players->delete();
+        Players::destroy($id);
         return new JsonResponse(['massage' => 'Player deleted successfully'], Response::HTTP_NO_CONTENT);
     }
 }

@@ -647,11 +647,10 @@
                     },
                     "image": {
                         "title": "Image",
-                        "description": "Image file path of the player",
-                        "type": "string",
+                        "description": "Image file of the player",
                         "example": "/playre123625.jpg"
                     },
-                    "team_id": {
+                    "team": {
                         "title": "Team Id",
                         "description": "Player's team ID",
                         "type": "integer",
@@ -676,8 +675,7 @@
                     },
                     "logo": {
                         "title": "Logo",
-                        "description": "Logo file path of the team",
-                        "type": "string",
+                        "description": "Logo file of the team",
                         "example": "/unity233625.jpg"
                     }
                 },
@@ -687,9 +685,16 @@
                 "title": "Update player request",
                 "description": "Update player request body data",
                 "required": [
-                    "team_id"
+                    "id"
                 ],
                 "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
                     "first_name": {
                         "title": "First Name",
                         "description": "First Name of the player",
@@ -704,16 +709,8 @@
                     },
                     "image": {
                         "title": "Image",
-                        "description": "Image file path of the player",
-                        "type": "string",
+                        "description": "Image file of the player",
                         "example": "/playre123625.jpg"
-                    },
-                    "team_id": {
-                        "title": "Team Id",
-                        "description": "Player's team ID",
-                        "type": "integer",
-                        "format": "int64",
-                        "example": "3"
                     }
                 },
                 "type": "object"
@@ -731,8 +728,7 @@
                     },
                     "logo": {
                         "title": "Logo",
-                        "description": "Logo file path of the team",
-                        "type": "string",
+                        "description": "Logo file of the team",
                         "example": "/unity233625.jpg"
                     }
                 },

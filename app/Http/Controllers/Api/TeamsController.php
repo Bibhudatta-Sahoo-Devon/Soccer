@@ -96,8 +96,8 @@ class TeamsController extends Controller
     public function store(StoreTeamRequest $request):JsonResponse
     {
         $request->validated();
-        $this->repository->store($request);
-        return new JsonResponse(['massage' => 'Created Team successfully'], Response::HTTP_CREATED);
+        $response =  $this->repository->store($request);
+        return new JsonResponse($response, Response::HTTP_CREATED);
 
     }
 
@@ -148,14 +148,14 @@ class TeamsController extends Controller
      * Update the specified resource in storage.
      *
      * @param UpdateTeamRequest $request
-     * @param \App\Models\Teams $teams
+     * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTeamRequest $request, Teams $teams):JsonResponse
+    public function update(UpdateTeamRequest $request, $id):JsonResponse
     {
         $request->validated();
-        $this->repository->update($request,$teams);
-        return new JsonResponse(['massage' => 'Update Team successfully'], Response::HTTP_ACCEPTED);
+        $response = $this->repository->update($request,$id);
+        return new JsonResponse($response, Response::HTTP_ACCEPTED);
     }
 
     /**
@@ -193,12 +193,12 @@ class TeamsController extends Controller
      * )
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Teams $teams
+     * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Teams $teams):JsonResponse
+    public function destroy($id):JsonResponse
     {
-        $this->repository->destroy($teams);
+        $this->repository->destroy($id);
         return new JsonResponse(['massage' => 'Deleted Team successfully'], Response::HTTP_NO_CONTENT);
     }
 }

@@ -29,11 +29,11 @@ Route::middleware(['auth:sanctum'])->group(function (){
 
     Route::middleware(['role'])->group(function (){
         Route::post('team',[TeamsController::class,'store']);
-        Route::put('team/{id}',[TeamsController::class,'update']);
-        Route::delete('team/{id}',[TeamsController::class,'destroy']);
+        Route::put('team/{teams}',[TeamsController::class,'update']);
+        Route::delete('team/{teams}',[TeamsController::class,'destroy']);
 
         Route::post('player',[PlayersController::class,'store']);
-        Route::put('player/{id}',[PlayersController::class,'update']);
-        Route::delete('player/{id}',[PlayersController::class,'destroy']);
+        Route::put('player/{players}',[PlayersController::class,'update']);
+        Route::delete('player/{players}',[PlayersController::class,'destroy']);
     });
 });

@@ -46,7 +46,7 @@ This application have Guest, user and admin role. Admin only able to do the crea
 
 ### Request
 
-`Get /api/players/{teams}`
+`Get /api/teams/{teams}/players`
 
     curl -i -H 'Accept: application/json' http://localhost.soccer.com/api/players/1
 
@@ -79,7 +79,7 @@ This application have Guest, user and admin role. Admin only able to do the crea
 
 ### Request
 
-`Put /api/team/{teams}`
+`Put /api/team/{id}`
 
     curl -i -H 'Accept: application/json' -d 'name=test&logo=file' http://localhost.soccer.com/api/team/1
 
@@ -97,7 +97,7 @@ This application have Guest, user and admin role. Admin only able to do the crea
 
 ### Request
 
-`Delete /api/team/{teams}`
+`Delete /api/team/{id}`
 
     curl -i -H 'Accept: application/json' http://localhost.soccer.com/api/team/1
 
@@ -131,7 +131,7 @@ This application have Guest, user and admin role. Admin only able to do the crea
 
 ### Request
 
-`Put /api/player/{players}`
+`Put /api/player/{id}`
 
     curl -i -H 'Accept: application/json' -d 'first_name=test&last_name=test&image=file&team=1' http://localhost.soccer.com/api/player/1
 
@@ -149,7 +149,7 @@ This application have Guest, user and admin role. Admin only able to do the crea
 
 ### Request
 
-`Delete /api/player/{players}`
+`Delete /api/player/{id}`
 
     curl -i -H 'Accept: application/json' http://localhost.soccer.com/api/team/1
 

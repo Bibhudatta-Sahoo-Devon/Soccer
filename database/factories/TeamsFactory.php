@@ -22,7 +22,8 @@ class TeamsFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->safeColorName(),
+            'logo' => $this->faker->imageUrl,
         ];
     }
 }

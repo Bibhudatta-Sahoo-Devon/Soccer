@@ -545,13 +545,13 @@
                             {
                                 "data": "logo",
                                 "render": function (data, type, row, meta) {
-                                    return '<img src="' + data + '" alt="' + data + '" height="70" width="50"/>';
+                                    return '<img src="' + data + '" alt="' + data + '" height="50%" width="50%"/>';
                                 }
                             },
                             {
                                 "data": "id",
                                 "render": function (data, type, row, meta) {
-                                    return '<button onclick="players(' + data + ')" />View Players</button>';
+                                    return '<a href="#" onclick="players(' + data + ')" /><u style="color: blue">View Players</u></a>';
                                 }
                             }
                         ]
@@ -591,7 +591,7 @@
                                 {
                                     "data": "image",
                                     "render": function (data, type, row, meta) {
-                                        return '<img src="' + data + '" alt="' + data + '" height="70" width="50"/>';
+                                        return '<img src="' + data + '" alt="' + data + '" height="50%" width="50%"/>';
                                     }
                                 }
                             ]

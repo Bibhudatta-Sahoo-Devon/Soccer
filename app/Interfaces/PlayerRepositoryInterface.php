@@ -10,7 +10,7 @@ use App\Models\Players;
 
 interface  PlayerRepositoryInterface
 {
-    public function store(StorePlayerRequest  $request):void;
-    public function update(UpdatePlayerRequest $request, players $players):void;
+    public function store(StorePlayerRequest  $request):players;
+    public function update(UpdatePlayerRequest $request, $id):players;
 
 }

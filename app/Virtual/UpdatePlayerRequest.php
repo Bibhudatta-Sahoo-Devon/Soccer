@@ -4,16 +4,30 @@
 namespace App\Virtual;
 
 
+use phpDocumentor\Reflection\File;
+
 /**
  * @OA\Schema(
  *      title="Update player request",
  *      description="Update player request body data",
  *      type="object",
- *      required={"team_id"}
+ *      required={"id"}
  * )
  */
 class UpdatePlayerRequest
 {
+    /**
+     * @OA\Property(
+     *     title="ID",
+     *     description="ID",
+     *     format="int64",
+     *     example=1
+     * )
+     *
+     * @var integer
+     */
+    public $id;
+
     /**
      * @OA\Property(
      *      title="First Name",
@@ -39,23 +53,11 @@ class UpdatePlayerRequest
     /**
      * @OA\Property(
      *      title="Image",
-     *      description="Image file path of the player",
+     *      description="Image file of the player",
      *      example="/playre123625.jpg"
      * )
      *
-     * @var string
+     * @var File
      */
     public $image;
-
-    /**
-     * @OA\Property(
-     *      title="Team Id",
-     *      description="Player's team ID",
-     *     format="int64",
-     *      example="3"
-     * )
-     *
-     * @var integer
-     */
-    public $team_id;
 }

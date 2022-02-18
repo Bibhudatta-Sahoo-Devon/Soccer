@@ -4,6 +4,8 @@
 namespace App\Virtual;
 
 
+use phpDocumentor\Reflection\File;
+
 /**
  * @OA\Schema(
  *      title="Update Team request",
@@ -28,11 +30,11 @@ class UpdateTeamRequest
     /**
      * @OA\Property(
      *      title="Logo",
-     *      description="Logo file path of the team",
+     *      description="Logo file of the team",
      *      example="/unity233625.jpg"
      * )
      *
-     * @var string
+     * @var File
      */
     public $logo;
 

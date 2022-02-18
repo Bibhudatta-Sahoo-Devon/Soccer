@@ -48,7 +48,7 @@
                             <tr>
                                 <td>{{$count+1}}</td>
                                 <td>{{$team['name']}}</td>
-                                <td><img src="{{asset($team['logo'])}}" alt="{{$team['logo']}}" width="50" height="70"></td>
+                                <td><img src="{{asset($team['logo'])}}" alt="{{$team['logo']}}" width="75" height="100"></td>
                                 <td><a href="{{route('teamPlayers',$team['id'])}}">View Players</a></td>
                                 @if(isset($admin) && $admin)
                                 <td><a href="{{route('editTeam',$team['id'])}}">Edit</a></td>

@@ -40,6 +40,7 @@ class RegisteredUserController extends Controller
             'role' => ['required', 'string','in:U,A'],
         ]);
 
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,

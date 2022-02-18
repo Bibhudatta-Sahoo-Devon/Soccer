@@ -5,6 +5,8 @@ namespace App\Virtual;
 
 
 
+use phpDocumentor\Reflection\File;
+
 /**
  * @OA\Schema(
  *      title="Store Player request",
@@ -40,11 +42,11 @@ class StorePlayerRequest
     /**
      * @OA\Property(
      *      title="Image",
-     *      description="Image file path of the player",
+     *      description="Image file of the player",
      *      example="/playre123625.jpg"
      * )
      *
-     * @var string
+     * @var File
      */
     public $image;
 
@@ -58,5 +60,5 @@ class StorePlayerRequest
      *
      * @var integer
      */
-    public $team_id;
+    public $team;
 }

@@ -68,12 +68,12 @@ class TeamController extends Controller
 
     /**
      * @param UpdateTeamRequest $request
-     * @param Teams $teams
+     * @param  $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(UpdateTeamRequest $request, Teams $teams)
+    public function update(UpdateTeamRequest $request, $id)
     {
-        $response = $this->teams->update($request, $teams);
+        $response = $this->teams->update($request, $id);
         if ($response->getStatusCode() == 202)
             return redirect('dashboard')->with(['message' => 'Team updated successfully']);
 
@@ -82,12 +82,12 @@ class TeamController extends Controller
 
 
     /**
-     * @param Teams $teams
+     * @param  $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function destroy(Teams $teams)
+    public function destroy($id)
     {
-        $response = $this->teams->destroy($teams);
+        $response = $this->teams->destroy($id);
         if ($response->getStatusCode() == 204)
             return redirect('dashboard')->with(['message' => 'Team successfully deleted!']);
 
