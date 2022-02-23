@@ -23,7 +23,7 @@
                 </div>
                 <div class="p-6 bg-white border-b border-gray-200">
 
-                    <form method="POST" id="team" action="{{(isset($data['team_id']))?'/player/'.$data['id']:'/create/players'}}" enctype="multipart/form-data">
+                    <form method="POST" id="team" action="{{(isset($data['team_id']))?url("player/{$data['id']}"):url('create/players')}}" enctype="multipart/form-data">
                     @csrf
 
                     <!-- First Name -->

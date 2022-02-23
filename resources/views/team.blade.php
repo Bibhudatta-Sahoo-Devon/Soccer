@@ -13,7 +13,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
 
-                    <form method="POST" id="team" action="{{(isset($data))?'/team/'.$data['id']:'/create/team'}}" enctype="multipart/form-data">
+                    <form method="POST" id="team" action="{{(isset($data))?url("team/{$data['id']}"):url('/create/team')}}" enctype="multipart/form-data">
                     @csrf
 
                     <!-- Name -->

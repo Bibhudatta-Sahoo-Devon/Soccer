@@ -540,7 +540,11 @@
                     $('#teamsTable').dataTable({
                         "aaData": data.data,
                         "columns": [
-                            {"data": "id"},
+                            {"data": "id",
+                                "render": function (data, type, row, meta) {
+                                    return meta.row+1;
+                                }
+                            },
                             {"data": "name"},
                             {
                                 "data": "logo",
@@ -585,7 +589,10 @@
                         $('#playerTable').dataTable({
                             "aaData": data.data,
                             "columns": [
-                                {"data": "id"},
+                                {"data": "id",
+                                    "render": function (data, type, row, meta) {
+                                        return meta.row+1;
+                                    }},
                                 {"data": "first_name"},
                                 {"data": "last_name"},
                                 {

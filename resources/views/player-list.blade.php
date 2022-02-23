@@ -31,7 +31,7 @@
                     @endif
                 </div>
                 <div class="p-6 bg-white border-b border-gray-200">
-                    @if(!empty($data->player))
+                    @if(!empty($data['player']))
 
                         <table id="players_table" class="display">
                             <thead>
@@ -47,7 +47,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($data->player as $count => $player)
+                            @foreach($data['player'] as $count => $player)
                                 <tr>
                                     <td>{{$count+1}}</td>
                                     <td>{{$player['first_name']}}</td>

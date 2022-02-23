@@ -2,48 +2,63 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Api\TeamsController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\PlayersController;
 use App\Http\Requests\StorePlayerRequest;
 use App\Http\Requests\UpdatePlayerRequest;
-use App\Models\Players;
-use App\Models\Teams;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 
 class PlayerController extends Controller
 {
     protected $players;
+    protected $teams;
 
-    public function __construct(PlayersController $players)
+    public function __construct(PlayersController $players,TeamsController $teams)
     {
         $this->players = $players;
+        $this->teams = $teams;
     }
 
     /**
-     * @param Teams $teams
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @param int $teamId
+     * @return Application|Factory|View
      */
-    public function list(Teams $teams)
+    public function getTeamPlayers(int $teamId)//todo
     {
-        return view('player-list', ['data' => $teams, 'admin' => Auth::user()->role == 'A']);
+        $response = $this->teams->getTeam($teamId);
+        $team = [];
+        if ($response->getStatusCode() == 200)
+            $team = json_decode($response->getContent(),true);
+        return view('player-list', ['data'=>$team, 'admin' => Auth::user()->role == 'A']);
+
     }
 
     /**
-     * @param Teams $teams
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @param int $teamId
+     * @return Application|Factory|View
      */
-    public function create(Teams $teams)
+    public function createPlayer(int $teamId)
     {
-        return view('player', ['data' => $teams]);
+        $response = $this->teams->getTeam($teamId);
+        $team = [];
+        if ($response->getStatusCode() == 200)
+            $team = json_decode($response->getContent(),true);
+        return view('player', ['data' => $team]);
     }
 
     /**
      * @param StorePlayerRequest $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return Application|RedirectResponse|Redirector
      */
-    public function store(StorePlayerRequest $request)
+    public function storeCreatePlayer(StorePlayerRequest $request)
     {
-        $response = $this->players->store($request);
+        $response = $this->players->createPlayer($request);
 
         if ($response->getStatusCode() == 201)
             return redirect(route('createPlayer', $request->get('team')))->with(['message' => 'Player created successfully']);
@@ -52,22 +67,26 @@ class PlayerController extends Controller
     }
 
     /**
-     * @param Players $players
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @param int $id
+     * @return Application|Factory|View|RedirectResponse
      */
-    public function edit(Players $players)
+    public function editPlayer(int $id)
     {
-        return view('player', ['data' => $players]);
+        $response = $this->players->getPlayer($id);
+        if ($response->getStatusCode() == 200)
+            return view('player', ['data' => (array)$response->getData()]);
+
+        return redirect()->back()->withErrors('Player is not present.');
     }
 
     /**
      * @param UpdatePlayerRequest $request
      * @param $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return Application|RedirectResponse|Redirector
      */
-    public function update(UpdatePlayerRequest $request, $id)
+    public function updatePlayer(UpdatePlayerRequest $request, $id)
     {
-        $response = $this->players->update($request, $id);
+        $response = $this->players->updatePlayer($request, $id);
 
         if ($response->getStatusCode() == 202)
             return redirect(route('teamPlayers', $request->get('team')))->with(['message' => 'Player updated successfully']);
@@ -76,17 +95,19 @@ class PlayerController extends Controller
     }
 
     /**
-     * @param Players $players
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @param int $id
+     * @return Application|RedirectResponse|Redirector
      */
-    public function destroy(Players $players)
+    public function deletePlayer(int $id)
     {
-        $teamID = $players->team_id;
-        $response = $this->players->destroy($players->id);
-        if ($response->getStatusCode() == 204)
-            return redirect(route('teamPlayers', $teamID))->with(['message' => 'Player deleted successfully']);
-
-        return redirect()->back()->withErrors($response);
+        $response = $this->players->getPlayer($id);
+        if ($response->getStatusCode() == 200){
+            $teamID = $response->getData()->team_id;
+            $response = $this->players->deletePlayer($id);
+            if ($response->getStatusCode() == 204)
+                return redirect(route('teamPlayers', $teamID))->with(['message' => 'Player deleted successfully']);
+        }
+        return redirect()->back()->withErrors('Player is not present.');
     }
 
 }

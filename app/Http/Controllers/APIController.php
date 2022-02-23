@@ -43,7 +43,7 @@ class APIController extends Controller
      * )
      *
      * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function login(Request $request):JsonResponse
     {
@@ -52,7 +52,9 @@ class APIController extends Controller
                 'message' => 'Invalid Credentials!'
             ],Response::HTTP_UNAUTHORIZED);
         }
+
         $user  =  Auth::user();
+
         if($user->role == 'A')
         $jwtToken  = $user->createToken('jwtToken',['admin'])->plainTextToken;
         else
@@ -62,6 +64,9 @@ class APIController extends Controller
     }
 
 
+    /**
+     * @return JsonResponse
+     */
     public function logout():JsonResponse
     {
         $cookie = Cookie::forget('jwt');

@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\TeamsController;
 use App\Http\Requests\StoreTeamRequest;
 use App\Http\Requests\UpdateTeamRequest;
-use App\Models\Teams;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 
 class TeamController extends Controller
@@ -20,11 +23,11 @@ class TeamController extends Controller
     }
 
     /**
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function dashboard()
     {
-        $teams = $this->teams->index();
+        $teams = $this->teams->getAllTeams();
         $data = [];
         if ($teams->getStatusCode() == 200) {
             $data = json_decode($teams->getContent(), true);
@@ -34,21 +37,21 @@ class TeamController extends Controller
     }
 
     /**
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
-    public function create()
+    public function createTeam()
     {
         return view('team');
     }
 
 
     /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @param StoreTeamRequest $request
+     * @return Application|RedirectResponse|Redirector
      */
-    public function store(StoreTeamRequest $request)
+    public function storeCreateTeam(StoreTeamRequest $request)
     {
-        $response = $this->teams->store($request);
+        $response = $this->teams->createTeam($request);
         if ($response->getStatusCode() == 201)
             return redirect('dashboard')->with(['message' => 'Team created successfully']);
 
@@ -57,23 +60,28 @@ class TeamController extends Controller
 
 
     /**
-     * @param Teams $teams
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @param int $id
+     * @return Application|Factory|View
      */
-    public function edit(Teams $teams)
+    public function editTeam(int $id)
     {
-        return view('team', ['data' => $teams]);
+        $team = $this->teams->getTeam($id);
+        $data = [];
+        if ($team->getStatusCode() == 200) {
+            $data = json_decode($team->getContent(), true);
+        }
+        return view('team', ['data'=>$data]);
     }
 
 
     /**
      * @param UpdateTeamRequest $request
      * @param  $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return Application|RedirectResponse|Redirector
      */
-    public function update(UpdateTeamRequest $request, $id)
+    public function updateTeam(UpdateTeamRequest $request, $id)
     {
-        $response = $this->teams->update($request, $id);
+        $response = $this->teams->updateTeam($request, $id);
         if ($response->getStatusCode() == 202)
             return redirect('dashboard')->with(['message' => 'Team updated successfully']);
 
@@ -83,11 +91,11 @@ class TeamController extends Controller
 
     /**
      * @param  $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return Application|RedirectResponse|Redirector
      */
-    public function destroy($id)
+    public function deleteTeam($id)
     {
-        $response = $this->teams->destroy($id);
+        $response = $this->teams->deleteTeam($id);
         if ($response->getStatusCode() == 204)
             return redirect('dashboard')->with(['message' => 'Team successfully deleted!']);
 

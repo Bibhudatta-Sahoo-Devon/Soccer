@@ -3,22 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 
+use App\Exceptions\ApiExceptionHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePlayerRequest;
 use App\Http\Requests\UpdatePlayerRequest;
-use App\Models\players;
-use App\Models\Teams;
 use App\Repositories\PlayerRepository;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class PlayersController extends Controller
 {
-    protected $repository;
+    protected $playeRepository;
 
     public function __construct(PlayerRepository $repository)
     {
-        $this->repository = $repository;
+        $this->playeRepository = $repository;
     }
 
 
@@ -60,12 +59,70 @@ class PlayersController extends Controller
      *
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param int $teamId
+     * @return JsonResponse
+     * @throws ApiExceptionHandler
      */
-    public function index(Teams $teams): JsonResponse
+    public function getTeamPlayers(int $teamId): JsonResponse
     {
-        $allPlayers = $teams->player;
-        return new JsonResponse(['data' => $allPlayers], Response::HTTP_OK);
+        try {
+            $allPlayers = $this->playeRepository->getTeamPlayers($teamId);
+            return new JsonResponse(['data' => $allPlayers], Response::HTTP_OK);
+        } catch (\Exception $exception) {
+            throw new ApiExceptionHandler($exception->getMessage(), $exception->getCode());
+        }
+    }
+
+    /**
+     * @OA\Get (
+     *      path="/player/{id}",
+     *      operationId="getPlayer",
+     *      tags={"Player"},
+     *      summary="Get a player details",
+     *      description="Returns list of players",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="Player id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response (
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent (ref="#/components/schemas/Player")
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     * )
+     *     )
+     *
+     * Give details of the player
+     *
+     * @param int $id
+     * @return JsonResponse
+     * @throws ApiExceptionHandler
+     */
+    public function getPlayer(int $id): JsonResponse
+    {
+        try {
+            $player = $this->playeRepository->getPlayer($id);
+            return new JsonResponse($player, Response::HTTP_OK);
+        } catch (\Exception $exception) {
+            throw new ApiExceptionHandler($exception->getMessage(), $exception->getCode());
+        }
     }
 
     /**
@@ -99,16 +156,21 @@ class PlayersController extends Controller
      *      )
      * )
      *
-     * Store a newly created resource in storage.
+     * Create a player.
      *
      * @param StorePlayerRequest $request
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
+     * @throws ApiExceptionHandler
      */
-    public function store(StorePlayerRequest $request): JsonResponse
+    public function createPlayer(StorePlayerRequest $request): JsonResponse
     {
-        $request->validated();
-        $response = $this->repository->store($request);
-        return new JsonResponse($response, Response::HTTP_CREATED);
+        try {
+            $request->validated();
+            $response = $this->playeRepository->storePlayer($request);
+            return new JsonResponse($response, Response::HTTP_CREATED);
+        } catch (\Exception $exception) {
+            throw new ApiExceptionHandler($exception->getMessage(), $exception->getCode());
+        }
     }
 
     /**
@@ -156,14 +218,19 @@ class PlayersController extends Controller
      *
      * @param UpdatePlayerRequest $request
      * @param $id
-     * @return object
+     * @return JsonResponse
+     * @throws ApiExceptionHandler
      */
 
-    public function update(UpdatePlayerRequest $request, $id): JsonResponse
+    public function updatePlayer(UpdatePlayerRequest $request, $id): JsonResponse
     {
-        $request->validated();
-        $response =  $this->repository->update($request, $id);
-        return new JsonResponse($response, Response::HTTP_ACCEPTED);
+        try {
+            $request->validated();
+            $response = $this->playeRepository->updatePlayer($request, $id);
+            return new JsonResponse($response, Response::HTTP_ACCEPTED);
+        } catch (\Exception $exception) {
+            throw new ApiExceptionHandler($exception->getMessage(), $exception->getCode());
+        }
     }
 
     /**
@@ -199,14 +266,19 @@ class PlayersController extends Controller
      *          description="Resource Not Found"
      *      )
      * )
-     * Remove the specified resource from storage.
+     * Delete player
      *
      * @param $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
+     * @throws ApiExceptionHandler
      */
-    public function destroy($id): JsonResponse
+    public function deletePlayer($id): JsonResponse
     {
-        Players::destroy($id);
-        return new JsonResponse(['massage' => 'Player deleted successfully'], Response::HTTP_NO_CONTENT);
+        try {
+            $this->playeRepository->deletePlayer($id);
+            return new JsonResponse(['massage' => 'Player deleted successfully'], Response::HTTP_NO_CONTENT);
+        } catch (\Exception $exception) {
+            throw new ApiExceptionHandler($exception->getMessage(), $exception->getCode());
+        }
     }
 }

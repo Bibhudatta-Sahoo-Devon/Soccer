@@ -2,23 +2,22 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\ApiExceptionHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTeamRequest;
 use App\Http\Requests\UpdateTeamRequest;
 use App\Interfaces\TeamRepositoryInterface;
-use App\Models\Teams;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class TeamsController extends Controller
 {
 
-    private $repository;
+    private $teamRepository;
 
     public function __construct(TeamRepositoryInterface $repository)
     {
-       $this->repository =  $repository;
+        $this->teamRepository = $repository;
     }
 
     /**
@@ -48,18 +47,72 @@ class TeamsController extends Controller
      * )
      *     )
      *
-     * Display a listing of the resource.
+     * Get all teams
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
+     * @throws ApiExceptionHandler
      */
-    public function index():JsonResponse
+    public function getAllTeams(): JsonResponse
     {
-        $allTeams = Teams::all();
-        return new JsonResponse(['data' => $allTeams], Response::HTTP_OK);
+        try {
+            $allTeams = $this->teamRepository->getAllTeams();
+
+            return new JsonResponse(['data' => $allTeams], Response::HTTP_OK);
+
+        } catch (\Exception $exception) {
+            throw new ApiExceptionHandler($exception->getMessage(), $exception->getCode());
+        }
     }
 
+
     /**
-     *  @OA\Post(
+     * @OA\Get (
+     *      path="/team/{id}",
+     *      operationId="getTeam",
+     *      tags={"Team"},
+     *      summary="Get team details",
+     *      description="Returns details of the team",
+     *      @OA\Response (
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent (ref="#/components/schemas/Team")
+     *       ),
+     *    @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     * )
+     *     )
+     *
+     * Get team details
+     *
+     * @param int $id
+     * @return JsonResponse
+     * @throws ApiExceptionHandler
+     */
+    public function getTeam(int $id): JsonResponse
+    {
+        try {
+            $team = $this->teamRepository->getTeam($id);
+
+            return new JsonResponse($team, Response::HTTP_OK);
+
+        } catch (\Exception $exception) {
+            throw new ApiExceptionHandler($exception->getMessage(), $exception->getCode());
+        }
+    }
+
+
+    /**
+     * @OA\Post(
      *      path="/team",
      *      operationId="storeTeam",
      *      tags={"Team"},
@@ -88,16 +141,23 @@ class TeamsController extends Controller
      *      )
      * )
      *
-     * Store a newly created resource in storage.
+     * Create a new team
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param StoreTeamRequest $request
+     * @return JsonResponse
+     * @throws ApiExceptionHandler
      */
-    public function store(StoreTeamRequest $request):JsonResponse
+    public function createTeam(StoreTeamRequest $request): JsonResponse
     {
-        $request->validated();
-        $response =  $this->repository->store($request);
-        return new JsonResponse($response, Response::HTTP_CREATED);
+        try {
+            $request->validated();
+            $response = $this->teamRepository->storeTeam($request);
+
+            return new JsonResponse($response, Response::HTTP_CREATED);
+
+        } catch (\Exception $exception) {
+            throw new ApiExceptionHandler($exception->getMessage(), $exception->getCode());
+        }
 
     }
 
@@ -145,21 +205,28 @@ class TeamsController extends Controller
      *      )
      * )
      *
-     * Update the specified resource in storage.
+     * Update the team details.
      *
      * @param UpdateTeamRequest $request
      * @param $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
+     * @throws ApiExceptionHandler
      */
-    public function update(UpdateTeamRequest $request, $id):JsonResponse
+    public function updateTeam(UpdateTeamRequest $request, $id): JsonResponse
     {
-        $request->validated();
-        $response = $this->repository->update($request,$id);
-        return new JsonResponse($response, Response::HTTP_ACCEPTED);
+        try {
+            $request->validated();
+            $response = $this->teamRepository->updateTeam($request, $id);
+
+            return new JsonResponse($response, Response::HTTP_ACCEPTED);
+
+        } catch (\Exception $exception) {
+            throw new ApiExceptionHandler($exception->getMessage(), $exception->getCode());
+        }
     }
 
     /**
-     *  @OA\Delete(
+     * @OA\Delete(
      *      path="/team/{id}",
      *      operationId="deleteTeam",
      *      tags={"Team"},
@@ -191,14 +258,21 @@ class TeamsController extends Controller
      *          description="Resource Not Found"
      *      )
      * )
-     * Remove the specified resource from storage.
+     * Remove the specified team from storage.
      *
      * @param $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
+     * @throws ApiExceptionHandler
      */
-    public function destroy($id):JsonResponse
+    public function deleteTeam($id): JsonResponse
     {
-        $this->repository->destroy($id);
-        return new JsonResponse(['massage' => 'Deleted Team successfully'], Response::HTTP_NO_CONTENT);
+        try {
+            $this->teamRepository->deleteTeam($id);
+
+            return new JsonResponse(['massage' => 'Deleted Team successfully'], Response::HTTP_NO_CONTENT);
+
+        } catch (\Exception $exception) {
+            throw new ApiExceptionHandler($exception->getMessage(), $exception->getCode());
+        }
     }
 }
