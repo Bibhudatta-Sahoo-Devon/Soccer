@@ -33,7 +33,7 @@ class TeamTest extends TestCase
 
         $response = $this->actingAs($user)->postJson('/api/team',[
             'name' => 'Driver GTeam',
-            'logo' => new \Illuminate\Http\UploadedFile(public_path('test-files\sc.jpg'), 'sc.jpg', null, null, true)
+            'logo' => new \Illuminate\Http\UploadedFile(public_path('test-files/sc.jpg'), 'sc.jpg', null, null, true)
         ]);
         $response->assertStatus(201);
     }
@@ -44,7 +44,7 @@ class TeamTest extends TestCase
 
         $response = $this->actingAs($user)->postJson('/api/team',[
             'name' => 'Driver GTeam',
-            'logo' => 'test-file\sc.jpg'
+            'logo' => 'test-file/sc.jpg'
         ]);
         $response->assertStatus(422);
     }
@@ -54,7 +54,7 @@ class TeamTest extends TestCase
 
         $response = $this->postJson('/api/team',[
             'name' => 'Driver GTeam',
-            'logo' => new \Illuminate\Http\UploadedFile(public_path('test-files\sc.jpg'), 'sc.jpg', null, null, true)
+            'logo' => new \Illuminate\Http\UploadedFile(public_path('test-files/sc.jpg'), 'sc.jpg', null, null, true)
         ]);
         $response->assertStatus(401);
     }
@@ -76,7 +76,7 @@ class TeamTest extends TestCase
         $team = Teams::factory()->create();
 
         $response = $this->actingAs($user)->putJson('/api/team/'.$team->id,[
-            'name' => new \Illuminate\Http\UploadedFile(public_path('test-files\sc.jpg'), 'sc.jpg', null, null, true)
+            'name' => new \Illuminate\Http\UploadedFile(public_path('test-files/sc.jpg'), 'sc.jpg', null, null, true)
         ]);
         $response->assertStatus(422);
         $response->assertJsonMissing(['massage' => 'Update Team successfully']);

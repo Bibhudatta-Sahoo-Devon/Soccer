@@ -44,7 +44,7 @@ class PlayerTest extends TestCase
         $response = $this->actingAs($user)->postJson('/api/player',[
             'first_name' => 'mark',
             'last_name' => 'star',
-            'image' => new \Illuminate\Http\UploadedFile(public_path('test-files\sc.jpg'), 'sc.jpg', null, null, true),
+            'image' => new \Illuminate\Http\UploadedFile(public_path('test-files/sc.jpg'), 'sc.jpg', null, null, true),
             'team' => $team->id
         ]);
         $response->assertStatus(201);
@@ -69,7 +69,7 @@ class PlayerTest extends TestCase
         $response = $this->postJson('/api/player',[
             'first_name' => 'mark',
             'last_name' => 'star',
-            'image' => new \Illuminate\Http\UploadedFile(public_path('test-files\sc.jpg'), 'sc.jpg', null, null, true),
+            'image' => new \Illuminate\Http\UploadedFile(public_path('test-files/sc.jpg'), 'sc.jpg', null, null, true),
             'team_id' => $team->id
         ]);
         $response->assertStatus(401);
@@ -94,7 +94,7 @@ class PlayerTest extends TestCase
         $player = Players::factory()->create();
 
         $response = $this->actingAs($user)->putJson('/api/player/'.$player->id,[
-            'name' => new \Illuminate\Http\UploadedFile(public_path('test-files\sc.jpg'), 'sc.jpg', null, null, true)
+            'name' => new \Illuminate\Http\UploadedFile(public_path('test-files/sc.jpg'), 'sc.jpg', null, null, true)
         ]);
         $response->assertStatus(422);
         $response->assertJsonMissing(['massage' => 'Players updated successfully']);
