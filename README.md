@@ -18,12 +18,12 @@ This application have Guest, user and admin role. Admin only able to do the crea
 ## To Run The Application with Docker 
 First rename `.env.example` to `.env`  
 Start the docker with command -`docker-compose up -d`     
-then we have to install the dependency with command -  `docker-compose exec php-apache composer install`  
-Now we have to link the storage file with public folder in laravel.   
+Now we have to set up laravel application, so run the below commands   
 1.`docker-compose exec php-apache /bin/bash `   
-2.`cd ..`  
-3.`php artisan storage:link`  
-4.`php artisan migrate`   
+2.`cd ..`     
+3.`composer update --no-scripts`
+4.`php artisan storage:link`  
+5.`php artisan migrate`   
 
 For Migrate database
 Now access the application by go to http://localhost:8088 url.
