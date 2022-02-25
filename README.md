@@ -4,7 +4,7 @@
 ## About Soccer
 This application is to see the soccer teams details. User and Guest user can see the teams and its player details, and Only admin will be able to manage the teams details. This application is build based on REST API.
 
-####There are some key features like
+#### There are some key features like
 - Create Soccer Teams 
 - Edit & Delete Teams 
 - View Team List
