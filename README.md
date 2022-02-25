@@ -21,7 +21,7 @@ Start the docker with command -`docker-compose up -d`
 Now we have to set up laravel application, so run the below commands   
 1.`docker-compose exec php-apache /bin/bash `   
 2.`cd ..`     
-3.`composer update --no-scripts`
+3.`composer update --no-scripts`  
 4.`php artisan storage:link`  
 5.`php artisan migrate`   
 
